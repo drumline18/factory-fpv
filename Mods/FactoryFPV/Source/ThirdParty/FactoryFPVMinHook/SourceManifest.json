@@ -1,0 +1,63 @@
+{
+  "Source": "https://github.com/TsudaKageyu/minhook",
+  "Version": "v1.3.4",
+  "Commit": "c3fcafdc10146beb5919319d0683e44e3c30d537",
+  "ByteSource": "Unmodified canonical Git blobs; checkout CRLF conversion is excluded.",
+  "Files": [
+    {
+      "Path": "LICENSE.txt",
+      "Bytes": 4365,
+      "Sha256": "D5C2224982B0B95A16B098A561335FA93F3EAF4D0AA964B7843EDB986DF78DC8"
+    },
+    {
+      "Path": "include/MinHook.h",
+      "Bytes": 7530,
+      "Sha256": "62DFF05E63155C6BF8135C36A0D79DEDBDCAAEDE9DA26FE38DAF0BEA34323E38"
+    },
+    {
+      "Path": "src/buffer.c",
+      "Bytes": 9814,
+      "Sha256": "0AB484D7870C3A8E7A3A1EE61E2070072CF445ED85B619D4C4207FED34356D99"
+    },
+    {
+      "Path": "src/buffer.h",
+      "Bytes": 1820,
+      "Sha256": "9769702BD625249E59A19EDE05C84365FCC7707E1FA0E5DF08DF42227CEE13E3"
+    },
+    {
+      "Path": "src/hook.c",
+      "Bytes": 26626,
+      "Sha256": "EDCCE4C81985D7DD5B73FEAE96D6498C8F749B1BCA4C3D2D9926EA9A17A84755"
+    },
+    {
+      "Path": "src/trampoline.c",
+      "Bytes": 10718,
+      "Sha256": "F13A169F803FF5A8E45C58CE668B4377A9878C0FC4452369B8A1325065186B2B"
+    },
+    {
+      "Path": "src/trampoline.h",
+      "Bytes": 3759,
+      "Sha256": "53ED9934492320617A27BFD952FFE7F5B7A4A1D09963D4512447082FE7B727B4"
+    },
+    {
+      "Path": "src/hde/hde64.c",
+      "Bytes": 9507,
+      "Sha256": "824EAFA315322E6DA105A7CE4EC1FC0E0ADEEE0106D32152FBB0B59E709BD15C"
+    },
+    {
+      "Path": "src/hde/hde64.h",
+      "Bytes": 2602,
+      "Sha256": "E99AA4997BDA14B534C614C3D8CB78A72C4ACA91A1212C8B03EC605D1D75E36E"
+    },
+    {
+      "Path": "src/hde/pstdint.h",
+      "Bytes": 1662,
+      "Sha256": "604D1CDF45C5A95BC9CF1BBF39CA05EF83013541101D34971C5CD7577E3D5247"
+    },
+    {
+      "Path": "src/hde/table64.h",
+      "Bytes": 3577,
+      "Sha256": "B774446D2F110CE954FB0A710F4693C5562DDBD8D56FE84106F2EE80DB8B50A2"
+    }
+  ]
+}

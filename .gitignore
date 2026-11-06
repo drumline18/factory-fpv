@@ -1,0 +1,46 @@
+/.deps/
+/build/
+/backups/
+/test-environment/
+
+# Local agent state and credentials
+/.codex/
+/.agents/
+/.aws/
+.env
+.env.*
+!.env.example
+
+# Unreal and C++ generated output
+**/Binaries/
+**/Intermediate/
+**/Saved/
+**/DerivedDataCache/
+.vs/
+.idea/
+*.sln
+*.suo
+*.VC.db
+*.VC.opendb
+*.obj
+*.o
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.log
+*.zip
+
+# Gameplay saves and machine-specific settings
+**/SaveGames/
+*.sav
+*.sav.gz
+*.sbp
+*.sbpcfg
+
+# Python and Blender temporary output
+__pycache__/
+*.pyc
+*.blend1
+*.blend2

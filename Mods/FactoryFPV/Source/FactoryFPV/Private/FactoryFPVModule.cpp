@@ -36,6 +36,14 @@
 #include "WindowsRadio.h"
 #include "FactoryFPVLocalPlayerSubsystem.h"
 #include "Engine/LocalPlayer.h"
+#include "Engine/BlueprintGeneratedClass.h"
+#include "Engine/DynamicBlueprintBinding.h"
+#include "Engine/SCS_Node.h"
+#include "Engine/SimpleConstructionScript.h"
+#include "Interfaces/IPluginManager.h"
+#include "UObject/StrongObjectPtr.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogFactoryFPVCompatibility, Log, All);
 
 class FFactoryFPVModule final : public IModuleInterface {
     IConsoleObject* StartCommand=nullptr;
@@ -61,10 +69,40 @@ class FFactoryFPVModule final : public IModuleInterface {
     IConsoleObject* SaveQACommand=nullptr;
     IConsoleObject* SettingsQACommand=nullptr;
     IConsoleObject* PropAudioQACommand=nullptr;
+    FDelegateHandle QuickBlueprintPreGC;
+    TStrongObjectPtr<USCS_Node> BuildGunMixinNode;
+    TStrongObjectPtr<UDynamicBlueprintBinding> BuildGunMixinBinding;
+
+    void RetainQuickBlueprintMixin() {
+        // SML 3.12.0 adds transient mixin objects to the cooked Build Gun.
+        // GC can reclaim them while the cooked construction script still
+        // references them. Look up the live objects without loading any assets
+        // or altering the construction script or Quick Blueprint's bindings.
+        auto* BuildGun = FindObject<UBlueprintGeneratedClass>(nullptr,
+            TEXT("/Game/FactoryGame/Equipment/BuildGun/BP_BuildGun.BP_BuildGun_C"));
+        if (!BuildGun || !BuildGun->SimpleConstructionScript) return;
+
+        USimpleConstructionScript* Script = BuildGun->SimpleConstructionScript;
+        auto* Node = FindObjectFast<USCS_Node>(Script, TEXT("TRANSIENT_NODE_MixinHostComponent"));
+        if (Node && Node->HasAnyFlags(RF_Transient) && Script->GetRootNodes().Contains(Node) && BuildGunMixinNode.Get() != Node) {
+            BuildGunMixinNode.Reset(Node);
+            UE_LOG(LogFactoryFPVCompatibility, Display, TEXT("Retaining Quick Blueprint's Build Gun mixin across garbage collection."));
+        }
+        auto* Binding = FindObjectFast<UDynamicBlueprintBinding>(BuildGun, TEXT("TRANSIENT_MixinInputDelegateBindingWrapper"));
+        if (Binding && Binding->HasAnyFlags(RF_Transient) && BuildGun->DynamicBindingObjects.Contains(Binding)) {
+            BuildGunMixinBinding.Reset(Binding);
+        }
+    }
 public:
     virtual bool SupportsDynamicReloading() override { return false; }
     virtual void StartupModule() override {
         FactoryFPVInputLease::Startup();
+        const auto QuickBlueprint = IPluginManager::Get().FindPlugin(TEXT("BlueprintHighlighted"));
+        const auto ModLoader = IPluginManager::Get().FindPlugin(TEXT("SML"));
+        if (QuickBlueprint && QuickBlueprint->IsEnabled() && QuickBlueprint->GetDescriptor().VersionName == TEXT("1.9.0") &&
+            ModLoader && ModLoader->GetDescriptor().VersionName == TEXT("3.12.0")) {
+            QuickBlueprintPreGC = FCoreUObjectDelegates::GetPreGarbageCollectDelegate().AddRaw(this, &FFactoryFPVModule::RetainQuickBlueprintMixin);
+        }
         StatusCommand = IConsoleManager::Get().RegisterConsoleCommand(TEXT("fpv.status"),
             TEXT("Report local player/hangar readiness, calibration and session state."),
             FConsoleCommandWithWorldArgsAndOutputDeviceDelegate::CreateStatic(&FFactoryFPVModule::Status), ECVF_Default);
@@ -140,6 +178,9 @@ public:
         }
     }
     virtual void ShutdownModule() override {
+        FCoreUObjectDelegates::GetPreGarbageCollectDelegate().Remove(QuickBlueprintPreGC);
+        BuildGunMixinBinding.Reset();
+        BuildGunMixinNode.Reset();
         FactoryFPVInputLease::Shutdown();
         if (StatusCommand) IConsoleManager::Get().UnregisterConsoleObject(StatusCommand);
         if (KitStatusCommand) IConsoleManager::Get().UnregisterConsoleObject(KitStatusCommand);

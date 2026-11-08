@@ -4,7 +4,7 @@ Factory FPV adds a remotely piloted FPV quadcopter to Satisfactory. It supports 
 
 ![Factory FPV racing over a factory with the next gate highlighted in pink](https://raw.githubusercontent.com/drumline18/factory-fpv/116020df0ecffc7653d2a6c2728952d36414c1a6/media/factory-race.jpg)
 
-This source snapshot corresponds to the `0.3.0-beta.1` Windows Steam single-player release, tested with Satisfactory 1.2.5.0 (CL517554) and Satisfactory Mod Loader 3.12.0. The playable release includes the cooked Unreal assets. This repository contains the C++ source, portable tests, Windows radio probe and build tools. Factory FPV is an unofficial community mod.
+This source snapshot corresponds to the `0.3.0-beta.2` Windows Steam single-player release, tested with Satisfactory 1.2.5.0 (CL517554) and Satisfactory Mod Loader 3.12.0. Beta 2 fixes a save-load crash when Quick Blueprint 1.9.0 is installed alongside Factory FPV. The [playable release on SMR](https://ficsit.app/mod/E3qDdLAjVgFq7B/version/8CdyqbfTrgADix) includes the cooked Unreal assets. This repository contains the C++ source, portable tests, Windows radio probe and build tools. Factory FPV is an unofficial community mod.
 
 ## Run the portable tests
 

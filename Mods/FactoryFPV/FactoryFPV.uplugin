@@ -1,8 +1,8 @@
 {
   "FileVersion": 3,
   "Version": 0,
-  "VersionName": "0.3.0-beta.1",
-  "SemVersion": "0.3.0-beta.1",
+  "VersionName": "0.3.0-beta.2",
+  "SemVersion": "0.3.0-beta.2",
   "FriendlyName": "Factory FPV",
   "Description": "Craft an FPV Radio Kit or use the optional sandbox hangar. Pilot acro or self-level scouts with your USB radio, saved tuning presets and FPV OSD. Single-player.",
   "Category": "Gameplay",
